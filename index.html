@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>ETCH-A-SKETCH</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+
+    <body>
+        <h1>What is this place?</h1>
+
+        <div class="container">
+
+
+            
+        </div>
+
+        <div id="buttons">
+            <div class="left-side">
+                <input type="text" value="10">
+                <button id="reset">Reset</button>
+            </div>
+
+            <div class="center-side">
+                <input type="text" placeholder="City name:">
+            </div>
+            
+            <div class="right-side">
+                <button id="easy">Easy</button>
+                <button id="hard">Hard</button>
+            </div>
+            
+        </div>
+        
+
+        <script>
+            let containerWidth;
+            let containerHeight;
+
+            function reset(scale){
+                for(var idx=0; idx<scale*scale; idx++){
+                    const grid = document.querySelector('.container');
+                    containerWidth = grid.clientWidth;
+                    containerHeight = grid.clientHeight;
+                    const node = document.chil('div');
+                    node.classList.add('node');
+                    node.style.width = (containerWidth/scale) + "px";
+                    node.style.height = (containerHeight/scale) + "px";
+
+                    node.style.background = "grey";
+
+                    grid.appendChild(node);
+                }
+            }
+
+            function start(scale){
+            
+                const container = document.querySelector('.container')
+                //console.log(container);
+                container.style.backgroundImage = "url(img/back" + (Math.floor(Math.random()*7)) + ".jpg)";
+                container.style.backgroundPosition = "center";
+                container.style.backgroundRepeat = "no-repeat";
+                container.style.backgroundSize = "cover";
+
+                
+                
+                //console.log(containerWidth);
+                //console.log(containerHeight);
+               let restartGrid = document.getElementsByClassName('node');
+               /* console.log(restartGrid);
+               console.log(restartGrid.length); */
+               while(restartGrid.length){
+                    restartGrid[0].parentNode.removeChild(restartGrid[0]);
+                    restartGrid = document.getElementsByClassName('node');
+                }
+                
+
+                
+                for(var idx=0; idx<scale*scale; idx++){
+                    const grid = document.querySelector('.container');
+                    containerWidth = grid.clientWidth;
+                    containerHeight = grid.clientHeight;
+                    const node = document.createElement('div');
+                    node.classList.add('node');
+                    node.style.width = (containerWidth/scale) + "px";
+                    node.style.height = (containerHeight/scale) + "px";
+
+                    node.style.background = "grey";
+
+                    grid.appendChild(node);
+                }
+
+                const allNodes = document.querySelectorAll('.node');
+                allNodes.forEach((node) => {
+                    node.addEventListener('mouseover', function(){
+                        node.style.background = "rgba(0, 0, 0, 0)";
+                    });
+                });
+            }
+
+            const resetButton = document.getElementById('reset');
+            const input = document.querySelector('input');
+            //let scale;
+            resetButton.addEventListener('click', function(){
+                resetButton.style.transform = 'scale(0.85)';
+                resetButton.style.backgroundPosition = 'right center';
+                if(resetButton.id === 'reset'){
+                    if(input.value <= 30 && input.value > 0){
+                        input.style.borderColor = 'rgba(200,200,200,0.87)';
+                        input.style.boxShadow = '0 2px 2px 0   rgba(0,0,0,0.16)';
+                        input.style.color = '#535353';
+                        start(input.value);
+                    }
+                    else {
+                        input.style.borderColor = 'red';
+                        input.style.boxShadow = '0 1px 1px 0 red';
+                        input.style.color = 'red';
+                        alert("Value must be between 1 and 30");
+                    }
+                }
+                        
+            });
+
+            resetButton.addEventListener('transitionend', function(){
+                resetButton.style.transform = '';
+            });
+            
+
+            /* buttons.forEach(button => {
+                if(button.tagName === 'BUTTON'){
+                    button.addEventListener('click', function(){
+                        button.style.transform = 'scale(0.85)';
+                        button.style.backgroundPosition = 'right center';
+                        if(button.id === 'reset'){
+                            //console.log(input.value);
+                            start(10);
+                        }
+                        
+                    });
+                }
+            }); */
+
+            /*buttons.forEach(button => {
+                if(button.tagName === 'BUTTON'){
+                    button.addEventListener('transitionend', function(){
+                        button.style.transform = '';
+                    });
+                }
+            });*/
+
+            start(10);
+
+            
+        </script>
+    </body>
+</html>
